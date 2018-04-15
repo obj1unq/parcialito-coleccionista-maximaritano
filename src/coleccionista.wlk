@@ -1,3 +1,8 @@
+//CORRECCION NOTA: Bien
+//Importante entender el problema de por qué está mal resuelto el método categorias. (no precalcular)
+//Conviene además inicializar las variables de la guitarra.
+
+
 /*     Parcialito: Coleccionista
  * 	
  *   Se trata de una aplicación que sirve para que una persona, dueña de una galería de elementos coleccionables
@@ -67,6 +72,11 @@
 // PUNTO 1: COLECCIONES
 object coleccionista {
 	var property elementos = #{}
+	
+	//CORRECCION: Está mal la existencia de esta variable.
+	//CORRECCION: Las categorias son algo que se debe calcular en el momento en que se pide
+	//CORRECCION: no se las tiene que acordar el objeto.
+	//CORRECCION: El metodo categorias() se debe resolver con un map.
 	var property categorias = #{}
 	
 	method agregarCategoria(unaCategoria){
@@ -76,7 +86,10 @@ object coleccionista {
 	method agregarElemento(unElemento) {
 	 //-> agrega un elemento a la galería de elementos.
 	 elementos.add(unElemento)
+	 //CORRECCION: precalculo!, alcanza con recordar el objeto. Mantener la coleccion de cateogorias
+	 //exige mucho esfuerzo innecesariamente y es muy propenso a bugs
 	 categorias.add(unElemento.categoria())
+	 
 	}
  
  	method quitarElemento(unElemento) {
@@ -86,6 +99,9 @@ object coleccionista {
  	// 		elementos.remove(unElemento)
  	//	else 
  			elementos.remove(unElemento)
+ 			//CORRECCION,  y acá te apareció un bug por precalcular!. si tenías dos elementos de la misma
+ 			//CORRECCION categoría y removes uno, te queda un elemento que tiene una categoría que no está 
+ 			//CORRECCION en dicha coleccion. Por eso no precalcules!
  			categorias.remove(unElemento.categoria())	
 	}
 	method objetosFragiles() {
@@ -158,8 +174,11 @@ object musica {
 
 // PUNTO 2: POLIMORFISMO. 
 object guitarraElectrica {
+	//CORRECCION: Conviene inicializar estas variables
+	//CORRECCION: de no hacerlo, siempre en los test hay que enviar los mensajes
+	//CORRECCION: de configuracion (ambos mensajes)
    var property estuche 
-   var property microfono
+   var property microfono 
    
    method configurarMicrofonos(marcaMicrofono){
    	microfono = marcaMicrofono
